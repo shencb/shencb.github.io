@@ -1,41 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>图片</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitHub API Demo</title>
 </head>
 <body>
-	<div id="imageContainer">
-		<img src ='/image/aaa.jpg'>
-	</div>
-	<script>
-		// 获取图片容器元素
-		var container = document.getElementById("imageContainer");
+<div id="imageContainer"></div>
+  <script>
+	// 获取图片容器元素
+	var container = document.getElementById("imageContainer");
+    async function getRepoContents() {
+      const url = 'https://api.github.com/repos/shencb/shencb.github.io/contents/image/';
+      const response = await fetch(url);
+      const data = await response.json();
+      return data;
+    }
 
-		// 图片文件夹路径
-		var folderPath = "/image/"; // 替换为你的图片文件夹路径
-
-		// 发起异步请求获取图片列表
-		fetch(folderPath)
-		  .then(response => response.text())
-		  .then(html => {
-			var parser = new DOMParser();
-			var doc = parser.parseFromString(html, "text/html");
-			var links = Array.from(doc.querySelectorAll('a'));
-			
-			// 筛选出以".jpg"、".jpeg"、".png"为后缀的链接
-			var imageLinks = links.filter(link => /\.(jpe?g|png)$/i.test(link.href));
-			
-			// 遍历图片链接列表，为每个图片创建<img>元素并添加到容器中
-			imageLinks.forEach(link => {
-			  var img = document.createElement("img");
-			  img.src = link.href;
-			  container.appendChild(img);
-			});
-		  })
-		  .catch(error => {
-			console.log("发生错误:", error);
-		  });
-
-    </script>
+    getRepoContents()
+      .then(data => {
+        const fileNames = data.map(file => file.path);
+		fileNames.forEach(fileName => {
+		  var img = document.createElement("img");
+          img.src = fileName;
+		  container.appendChild(img);
+        });		
+        console.log(fileNames);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  </script>
 </body>
 </html>
