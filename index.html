@@ -6,6 +6,12 @@
   <title>GitHub API Demo</title>
 </head>
 <body>
+<form id="githubForm">
+        <input type="text" id="filePath" placeholder="文件名">
+		<input type="file" id="fileInput" style="display: none;">
+		<button onclick="openFileChooser()">选择文件</button>
+        <button type="submit">提交</button>
+    </form>
 <div id="imageContainer"></div>
   <script>
 	// 获取图片容器元素
@@ -23,13 +29,68 @@
 		fileNames.forEach(fileName => {
 		  var img = document.createElement("img");
           img.src = fileName;
+		  img.style = "width: 100px; height: 100px;"
 		  container.appendChild(img);
         });		
-        console.log(fileNames);
       })
       .catch(error => {
         console.error(error);
       });
+	  
+	  
+	  var content;
+		var fileName;
+        $(document).ready(function () {
+            $('#githubForm').submit(function (e) {
+                e.preventDefault();
+                var filePath = $('#filePath').val();
+
+				if (filePath === null || filePath === undefined || filePath === '') {
+				  filePath = fileName;
+				} 
+                var url = 'https://api.github.com/repos/shencb/shencb.github.io/contents/image/' + filePath;
+
+                var data = {
+                    message: 'Commit message',
+                    content: content,
+                    branch: "main"
+                };
+
+                $.ajax({
+                    url: url,
+                    type: 'PUT',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('Authorization', 'Bearer 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');
+                        xhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
+                    },
+                    data: JSON.stringify(data),
+                    success: function (response) {
+                        console.log('提交成功！');
+                    },
+                    error: function (error) {
+                        console.error('提交失败', error);
+                    }
+                });
+            });
+        });
+		
+		function openFileChooser() {
+		  const fileInput = document.getElementById('fileInput');
+		  fileInput.click();
+
+		  fileInput.addEventListener('change', handleFileSelection);
+		}
+
+		function handleFileSelection(event) {
+		  const selectedFile = event.target.files[0];
+		  // 在这里处理选中的文件，例如读取文件内容或执行其他操作
+		  const reader = new FileReader();
+		  reader.readAsDataURL(selectedFile);
+		  reader.onload = function() {
+		  const base64Data = reader.result;
+		  content = base64Data.split(',')[1];
+		  fileName = selectedFile.name + '';
+		}
   </script>
 </body>
 </html>
