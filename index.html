@@ -14,7 +14,9 @@
     </form>
 <div id="imageContainer"></div>
   <script>
-	// 获取图片容器元素
+
+	 window.onload = function() {
+		   // 获取图片容器元素
 	var container = document.getElementById("imageContainer");
     async function getRepoContents() {
       const url = 'https://api.github.com/repos/shencb/shencb.github.io/contents/image/';
@@ -35,7 +37,10 @@
       })
       .catch(error => {
         console.error(error);
-      });
+      }); 
+    	// 在此处放置原来的 JavaScript 代码
+  	};
+	
 	  
 	  
 	  var content;
