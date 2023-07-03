@@ -1,1 +1,41 @@
-"Hello World"
+<!DOCTYPE html>
+<html>
+<head>
+    <title>图片</title>
+</head>
+<body>
+	<div id="imageContainer"></div>
+
+
+    <script>
+		// 获取图片容器元素
+		var container = document.getElementById("imageContainer");
+
+		// 图片文件夹路径
+		var folderPath = "image/"; // 替换为你的图片文件夹路径
+
+		// 发起异步请求获取图片列表
+		fetch(folderPath)
+		  .then(response => response.text())
+		  .then(html => {
+			var parser = new DOMParser();
+			var doc = parser.parseFromString(html, "text/html");
+			var links = Array.from(doc.querySelectorAll('a'));
+			
+			// 筛选出以".jpg"、".jpeg"、".png"为后缀的链接
+			var imageLinks = links.filter(link => /\.(jpe?g|png)$/i.test(link.href));
+			
+			// 遍历图片链接列表，为每个图片创建<img>元素并添加到容器中
+			imageLinks.forEach(link => {
+			  var img = document.createElement("img");
+			  img.src = link.href;
+			  container.appendChild(img);
+			});
+		  })
+		  .catch(error => {
+			console.log("发生错误:", error);
+		  });
+
+    </script>
+</body>
+</html>
