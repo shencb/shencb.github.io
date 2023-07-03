@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GitHub API Demo</title>
-</head>
-<body>
-<form id="githubForm">
-        <input type="text" id="filePath" placeholder="文件名">
-		<input type="file" id="fileInput" style="display: none;">
-		<button onclick="openFileChooser()">选择文件</button>
-        <button type="submit">提交</button>
-    </form>
-<div id="imageContainer"></div>
-  <script>
+	<head>
+		<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<title>GitHub API Demo</title>
+		</head>
+	<body>
+		<form id="githubForm">
+			<input type="text" id="filePath" placeholder="文件名">
+			<input type="file" id="fileInput" style="display: none;">
+			<button onclick="openFileChooser()">选择文件</button>
+			<button type="submit">提交</button>
+		</form>
+		<div id="imageContainer"/>
+		<script>
 
 	 window.onload = function() {
 		   // 获取图片容器元素
@@ -41,9 +41,9 @@
       }); 
     	// 在此处放置原来的 JavaScript 代码
   	};
-	
-	  
-	  
+
+
+
 	  var content;
 		var fileName;
         $(document).ready(function () {
@@ -79,7 +79,7 @@
                 });
             });
         });
-		
+
 		function openFileChooser() {
 		  const fileInput = document.getElementById('fileInput');
 		  fileInput.click();
@@ -94,9 +94,9 @@
 		  reader.readAsDataURL(selectedFile);
 		  reader.onload = function() {
 		  const base64Data = reader.result;
-		  content = base64Data.split(',')[1];
+		  content = base64Data.split(',')[1];}
 		  fileName = selectedFile.name + '';
 		}
-  </script>
-</body>
+		</script>
+	</body>
 </html>
