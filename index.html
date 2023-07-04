@@ -7,10 +7,11 @@
 		<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 	</head>
 	<body>
+		<input type="text" id="filePath" placeholder="文件名">
+		<input type="file" id="fileInput" style="display: none;">
+		<button onclick="openFileChooser()">选择文件</button>
 		<form id="githubForm">
-			<input type="text" id="filePath" placeholder="文件名">
-			<input type="file" id="fileInput" style="display: none;">
-			<button onclick="openFileChooser()">选择文件</button>
+			<input type="password" id="token" placeholder="令牌">
 			<button type="submit">提交</button>
 		</form>
 		<div id="imageContainer"></div>
@@ -51,6 +52,7 @@
             $('#githubForm').submit(function (e) {
                 e.preventDefault();
                 var filePath = $('#filePath').val();
+                var token = $('#token').val();
 
 				if (filePath === null || filePath === undefined || filePath === '') {
 				  filePath = fileName;
@@ -67,7 +69,7 @@
                     url: url,
                     type: 'PUT',
                     beforeSend: function (xhr) {
-                        xhr.setRequestHeader('Authorization', 'Bearer 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');
+                        xhr.setRequestHeader('Authorization', 'Bearer '+token);
                         xhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
                     },
                     data: JSON.stringify(data),
@@ -84,7 +86,6 @@
 		function openFileChooser() {
 		  const fileInput = document.getElementById('fileInput');
 		  fileInput.click();
-
 		  fileInput.addEventListener('change', handleFileSelection);
 		}
 
